@@ -131,37 +131,66 @@ void AHiderCharacter::LineTrace_Implementation(const FVector& Start, const FVect
 	// Get the player controller
     APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
+	int TraceZ = 20;
+
     if (PlayerController)
     {
-        // Set up the collision parameters
+
         FCollisionQueryParams TraceParams(FName(TEXT("LineTrace")), true, this);
 
-        // Perform the line trace
         FHitResult HitResult;
         bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_MAX, TraceParams);
 
 		OutHit = HitResult;
 
-        // Check if the line trace hit something
         if (bHit)
         {
-            // Handle the hit result (you can access HitResult.Actor, HitResult.Component, etc.)
-            // ...
 
-            // Draw a debug line to visualize the trace
             //DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0, 0, 1);
 
 			ReturnValue = 1;
         }
         else
         {
-            // Draw a debug line to visualize the trace
+
             //DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 0, 0, 1);
 
 			ReturnValue = 0;
         }
 
-		///!crashes!       GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Green, *(HitResult.GetActor())->GetName());
+		if(ReturnValue){
+
+			AActor* HitActor = HitResult.GetActor();
+			FString HitActorName = HitActor->GetName();
+
+			if(HitActorName.Equals("BP_Rope_Edge")){
+
+				return;
+
+			}
+			else{
+
+				//recurse
+
+			}
+
+		}
+		else{
+
+			if(TraceZ != 20){
+
+				TraceZ += 0.5;
+
+				//recurse
+
+			}
+			else{
+
+				return;
+
+			}
+
+		}
     }
 
 }

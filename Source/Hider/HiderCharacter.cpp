@@ -126,72 +126,59 @@ void AHiderCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-void AHiderCharacter::LineTrace_Implementation(const FVector& Start, const FVector& End, FHitResult& OutHit, bool& ReturnValue)
+void AHiderCharacter::LineTrace_Implementation(const FVector& Start, const FVector& End, FHitResult& OutHit, FVector_NetQuantize& ImpactPoint, bool& CanSpawnRope)
 {
-	// Get the player controller
     APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
-	int TraceZ = 20;
+	double TraceZ = -1000;
+
+	FVector NewEnd;
+	NewEnd.X = End.X;
+	NewEnd.Y = End.Y;
 
     if (PlayerController)
     {
 
-        FCollisionQueryParams TraceParams(FName(TEXT("LineTrace")), true, this);
+        while(TraceZ != 1000){
 
-        FHitResult HitResult;
-        bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_MAX, TraceParams);
+			FCollisionQueryParams TraceParams(FName(TEXT("LineTrace")), true, this);
 
-		OutHit = HitResult;
+			NewEnd.Z = End.Z + TraceZ;
 
-        if (bHit)
-        {
+        	FHitResult HitResult;
+        	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, NewEnd, ECollisionChannel::ECC_MAX, TraceParams);
 
-            //DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0, 0, 1);
+			//DrawDebugLine(GetWorld(), Start, NewEnd, FColor::Red, true, 1, 0, 1);
 
-			ReturnValue = 1;
-        }
-        else
-        {
+			if(bHit){
 
-            //DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 0, 0, 1);
+				OutHit = HitResult; 
+				ImpactPoint = HitResult.ImpactPoint;
 
-			ReturnValue = 0;
-        }
+				AActor* HitActor = HitResult.GetActor();
+				UClass* HitActorClass = HitActor->GetClass();
+				FString HitActorClassName = HitActorClass->GetName();
 
-		if(ReturnValue){
+				//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, HitActorClassName);
 
-			AActor* HitActor = HitResult.GetActor();
-			FString HitActorName = HitActor->GetName();
+				if(HitActorClassName.Equals("BP_Rope_Edge_C")){
 
-			if(HitActorName.Equals("BP_Rope_Edge")){
+					CanSpawnRope = 1;
 
-				return;
+					return;
 
-			}
-			else{
-
-				//recurse
+				}
 
 			}
+
+			TraceZ = TraceZ + 50;
 
 		}
-		else{
 
-			if(TraceZ != 20){
-
-				TraceZ += 0.5;
-
-				//recurse
-
-			}
-			else{
-
-				return;
-
-			}
-
-		}
     }
+
+	CanSpawnRope = 0;
+	return;
 
 }
 

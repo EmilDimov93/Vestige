@@ -44,7 +44,7 @@ public:
 	int32 health = 100;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Test")
-	void LineTrace(const FVector& Start, const FVector& End, FHitResult& OutHit, bool& ReturnValue);
+	void LineTrace(const FVector& Start, const FVector& End, FHitResult& OutHit, FVector_NetQuantize& ImpactPoint, bool& CanSpawnRope);
 	
 
 protected:

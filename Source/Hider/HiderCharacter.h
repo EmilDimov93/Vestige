@@ -48,6 +48,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Test")
 	void MakeHookEndpointPreviewTransform(const float& HitActorLocationZ, const FVector& ImpactPoint, const float& Distance, FTransform& HookEndpointPreviewTransform);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Test")
+	void MakeRopeTransform(const float& HitActorLocationZ, const FVector& ImpactPoint, const float& Distance, FTransform& RopeTransform);
 	
 
 protected:

@@ -133,17 +133,35 @@ void AHiderCharacter::MakeHookEndpointPreviewTransform_Implementation(const floa
 	HookEndpointPreviewLocation.X = ImpactPoint.X;
 	HookEndpointPreviewLocation.Y = ImpactPoint.Y;
 	HookEndpointPreviewLocation.Z = HitActorLocationZ + 70;
+	HookEndpointPreviewTransform.SetLocation(HookEndpointPreviewLocation);
 
 	FRotator HookEndpointPreviewRotation = UKismetMathLibrary::FindLookAtRotation(HookEndpointPreviewLocation, GetActorLocation());
 	HookEndpointPreviewRotation.Roll = 0;
 	HookEndpointPreviewRotation.Yaw = HookEndpointPreviewRotation.Yaw + 90;
+	HookEndpointPreviewTransform.SetRotation(HookEndpointPreviewRotation.Quaternion());
 
 	FVector HookEndpointPreviewScale = {1, 1, 1};
 	HookEndpointPreviewScale = HookEndpointPreviewScale * (Distance / 2000);
-
-	HookEndpointPreviewTransform.SetLocation(HookEndpointPreviewLocation);
-	HookEndpointPreviewTransform.SetRotation(HookEndpointPreviewRotation.Quaternion());
 	HookEndpointPreviewTransform.SetScale3D(HookEndpointPreviewScale);
+
+}
+
+void AHiderCharacter::MakeRopeTransform_Implementation(const float& HitActorLocationZ, const FVector& ImpactPoint, const float& Distance, FTransform& RopeTransform){
+
+	FVector RopeLocation = GetActorLocation();
+	RopeTransform.SetLocation(RopeLocation);
+
+	FVector RopeLookAtRotationEnd;
+	RopeLookAtRotationEnd.X = ImpactPoint.X;
+	RopeLookAtRotationEnd.Y = ImpactPoint.Y;
+	RopeLookAtRotationEnd.Z = HitActorLocationZ + 115;
+
+	FRotator RopeRotation = UKismetMathLibrary::FindLookAtRotation(RopeLocation, RopeLookAtRotationEnd);
+	RopeTransform.SetRotation(RopeRotation.Quaternion());
+
+	FVector RopeScale = {1, 1, 1};
+	RopeScale.Z = Distance / 56;
+	RopeTransform.SetScale3D(RopeScale);
 
 }
 

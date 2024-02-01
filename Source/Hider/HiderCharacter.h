@@ -45,6 +45,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Test")
 	void LineTrace(const FVector& Start, const FVector& End, FHitResult& OutHit, FVector_NetQuantize& ImpactPoint, bool& CanSpawnRope);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Test")
+	void MakeHookEndpointPreviewTransform(const float& HitActorLocationZ, const FVector& ImpactPoint, const float& Distance, FTransform& HookEndpointPreviewTransform);
 	
 
 protected:

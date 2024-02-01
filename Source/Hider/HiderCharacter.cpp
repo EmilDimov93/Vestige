@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "Engine/World.h"  // Include World module
 #include "DrawDebugHelpers.h"  // Include DrawDebugHelpers for visualization
@@ -124,6 +125,26 @@ void AHiderCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AHiderCharacter::MakeHookEndpointPreviewTransform_Implementation(const float& HitActorLocationZ, const FVector& ImpactPoint, const float& Distance, FTransform& HookEndpointPreviewTransform){
+
+	FVector HookEndpointPreviewLocation;
+	HookEndpointPreviewLocation.X = ImpactPoint.X;
+	HookEndpointPreviewLocation.Y = ImpactPoint.Y;
+	HookEndpointPreviewLocation.Z = HitActorLocationZ + 70;
+
+	FRotator HookEndpointPreviewRotation = UKismetMathLibrary::FindLookAtRotation(HookEndpointPreviewLocation, GetActorLocation());
+	HookEndpointPreviewRotation.Roll = 0;
+	HookEndpointPreviewRotation.Yaw = HookEndpointPreviewRotation.Yaw + 90;
+
+	FVector HookEndpointPreviewScale = {1, 1, 1};
+	HookEndpointPreviewScale = HookEndpointPreviewScale * (Distance / 2000);
+
+	HookEndpointPreviewTransform.SetLocation(HookEndpointPreviewLocation);
+	HookEndpointPreviewTransform.SetRotation(HookEndpointPreviewRotation.Quaternion());
+	HookEndpointPreviewTransform.SetScale3D(HookEndpointPreviewScale);
+
 }
 
 void AHiderCharacter::LineTrace_Implementation(const FVector& Start, const FVector& End, FHitResult& OutHit, FVector_NetQuantize& ImpactPoint, bool& CanSpawnRope)

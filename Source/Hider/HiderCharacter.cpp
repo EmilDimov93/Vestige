@@ -165,11 +165,14 @@ void AHiderCharacter::MakeRopeTransform_Implementation(const float& HitActorLoca
 
 }
 
-void AHiderCharacter::LineTrace_Implementation(const FVector& Start, const FVector& End, FHitResult& OutHit, FVector_NetQuantize& ImpactPoint, bool& CanSpawnRope)
+void AHiderCharacter::LineTrace_Implementation(FHitResult& OutHit, FVector_NetQuantize& ImpactPoint, bool& CanSpawnRope)
 {
     APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
 	double TraceZ = -1000;
+
+	FVector Start = FollowCamera->GetComponentLocation();
+	FVector End = FollowCamera->GetForwardVector() * 4500 + Start;
 
 	FVector NewEnd;
 	NewEnd.X = End.X;

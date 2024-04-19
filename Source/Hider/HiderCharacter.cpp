@@ -138,6 +138,7 @@ void AHiderCharacter::MakeHookEndpointPreviewTransform_Implementation(const floa
 	FRotator HookEndpointPreviewRotation = UKismetMathLibrary::FindLookAtRotation(HookEndpointPreviewLocation, GetActorLocation());
 	HookEndpointPreviewRotation.Roll = 0;
 	HookEndpointPreviewRotation.Yaw = HookEndpointPreviewRotation.Yaw + 90;
+	HookEndpointPreviewRotation.Pitch = 0;
 	HookEndpointPreviewTransform.SetRotation(HookEndpointPreviewRotation.Quaternion());
 
 	FVector HookEndpointPreviewScale = {1, 1, 1};

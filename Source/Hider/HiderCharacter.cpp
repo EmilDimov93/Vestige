@@ -150,7 +150,7 @@ void AHiderCharacter::MakeHookEndpointPreviewTransform_Implementation(const floa
 void AHiderCharacter::MakeRopeTransform_Implementation(const float& HitActorLocationZ, const FVector& ImpactPoint, const float& Distance, FTransform& RopeTransform){
 
 	FVector RopeLocation = GetActorLocation();
-	RopeLocation.Z = RopeLocation.Z - 30;
+	RopeLocation.Z = RopeLocation.Z - 20;
 	RopeTransform.SetLocation(RopeLocation);
 
 	FVector RopeLookAtRotationEnd;
@@ -162,7 +162,7 @@ void AHiderCharacter::MakeRopeTransform_Implementation(const float& HitActorLoca
 	RopeTransform.SetRotation(RopeRotation.Quaternion());
 
 	FVector RopeScale = {1, 1, 1};
-	RopeScale.Z = Distance / 55;
+	RopeScale.Z = Distance / 56;
 	RopeTransform.SetScale3D(RopeScale);
 
 }
